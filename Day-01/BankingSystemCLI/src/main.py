@@ -1,4 +1,6 @@
 from BankingSystem import BankingSystem
+
+bank = BankingSystem()
 class main:
     while True:
         print('\n')
@@ -19,24 +21,24 @@ class main:
             name=input('Enter Account Holder Name :')
             pin = int(input('Enter the pin :'))
             deposit_value = int(input('Enter the deposit : '))
-            account = BankingSystem.registerSystem(BankingSystem,name,pin,deposit_value)
+            account = bank.registerSystem(name,pin,deposit_value)
             if account :
                 print('Account created successfully.!')
-                print(account.get_details())
+                print(account.get_account_details())
         elif choiceM == 2 :
             print('Entering the Depositing System.')
             account_number= int(input('Enter the account number :'))
             deposit_amount=int(input('Enter the Deposit Amount :'))
-            BankingSystem.deposit(account_number,deposit_amount)
+            bank.deposit(account_number,deposit_amount)
         elif choiceM == 3 :
             print('Entering the Withdrawing System.')
             account_number = int(input('Enter the Account Number :'))
             withdraw_amount = int(input('Enter the withdrawal Amount :'))
-            BankingSystem.withdraw(account_number,withdraw_amount)
+            bank.withdraw(account_number,withdraw_amount)
         elif choiceM == 4 :
             print('Gathering the detials to check the current balance.')
             account_number = int(input('Enter the Account Number :'))
-            BankingSystem.check_balance(account_number)
+            bank.check_balance(account_number)
         elif choiceM == 5 :
             print('Exiting the Banking System. Thank you for using our service.')
             break
