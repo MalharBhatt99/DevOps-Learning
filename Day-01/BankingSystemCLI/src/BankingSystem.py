@@ -1,31 +1,44 @@
-from Account import *
-import random
-class BankingSystem(Account) :
-    def login(self,account_Number,pin_Number):
-        while True:
-            print('Welcome to the Login Dashboard :')
-            account_Number=input('Enter the Account Number here ->')
-            pin_Number = int(input('Enter the Pin Number here ->'))
-            
-            if(self.ACCOUNT_NUMBER==account_Number) and (self.PIN_NUMBER == pin_Number):
-                print('LogIn Successful.')
-                print('Operating Main Dashboard :')
-            elif self.ACCOUNT_NUMBER != account_Number:
-                print('Account doesnot exist.')
-                choiceR= input('if You want to register type \'Y\' or else type \'N\':')
-                if choiceR == 'Y'or choiceR=='y':
-                    print('Entering Registering System.')
-                    self.registerSystem()
-                elif choiceR == 'N' or choiceR == 'n':
-                    print('Existing the Banking System.')
-                    exit()
-                else :
-                    print('Please enter a valid choice.')
+from Account import Account
+class BankingSystem:
+    def __init__(self):
+        self.accounts = {}
+        self.account_Number = 1001
 
-    def registerSystem(self,account_Number,pin_Number):
-        nextAccountNumber = random.randint(100000,999999)
-        print('Welcome to the Registration Dashbaord :')
-        print('Your Account Number is :' , nextAccountNumber)
-        pin_Number=int(input('Enter the pincode number here ->'))
-
-        
+    def registerSystem(self,name,pin,initial_deposit_value):
+        if not name.strip():
+            print('Name cannot be Empty.')
+            return False
+        if initial_deposit_value < 2000 :
+            print('Deposit Value should be minimum ₹2000.')
+            return False
+        if not isinstance(pin, int) or pin <= 0:
+            print('Pin must be a positive integer.')
+            return False
+        account = Account(self.account_Number,pin,name,initial_deposit_value)
+        self.accounts[self.account_Number] = account
+        self.account_Number += 1
+        return account
+    
+    def get_account(self,account_number):
+        return self.accounts.get(account_number)
+    
+    def deposit(self,account_number,deposit_value):
+        account = self.get_account(account_number)
+        if not account:
+            print('Account not Found.')
+            return False
+        account.deposit(deposit_value)
+    
+    def withdraw(self,account_number,withdraw_value):
+        account = self.get_account(account_number)
+        if not account:
+            print('Account not found.')
+            return False
+        account.withdraw(withdraw_value)
+    
+    def check_balance(self,account_number):
+        account = self.get_account(account_number)
+        if not account:
+            print('Account not Found.')
+            return False
+        print('Balance is :',account.get_balance())
