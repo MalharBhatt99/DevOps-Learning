@@ -15,26 +15,30 @@ class BankingSystem:
             print('1.Deposit Amount')
             print('2.Withdraw Amount')
             print('3.Check Balance')
-            print('4.Exit')
+            print('4.Show Transactions')
+            print('5.Exit')
             print('=================')
                     
             choiceM = int(input('Enter the Choice here ->'))
             if choiceM == 1 :
-                print('Entering the Depositing System.')
+                print('\nEntering the Depositing System.')
                 deposit_amount=int(input('Enter the Deposit Amount :'))
                 self.deposit(account_number,deposit_amount)
             elif choiceM ==  2:
-                print('Entering the Withdrawing System.')
+                print('\nEntering the Withdrawing System.')
                 withdraw_amount = int(input('Enter the withdrawal Amount :'))
                 self.withdraw(account_number,withdraw_amount)
             elif choiceM == 3 :
-                print('Gathering the detials to check the current balance.')
+                print('\nGathering the detials to check the current balance.')
                 self.check_balance(account_number)
             elif choiceM == 4 :
-                print('Exiting the Banking System. Thank you for using our service.')
+                print('\nGathering the details of your transactions.')
+                self.show_transactions(account_number)
+            elif choiceM == 5 :
+                print('\nExiting the Banking System. Thank you for using our service.')
                 break
             else :
-                print('Invalid Choice. Please enter a valid option from the menu.')
+                print('\nInvalid Choice. Please enter a valid option from the menu.')
 
 
     def LogInSystem(self,account_number,pin):
@@ -89,3 +93,10 @@ class BankingSystem:
             print('Account not Found.')
             return False
         print('Balance is :',account.get_balance())
+    
+    def show_transactions(self,account_number):
+        account = self.get_account(account_number)
+        if not account :
+            print('Account not found.')
+            return False
+        account.show_transactions()

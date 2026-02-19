@@ -15,7 +15,7 @@ class main:
         
         choice = int(input('Enter the Choice here ->'))
         if choice == 1 :
-            print('Entering the Log-IN System.')
+            print('\nEntering the Log-IN System.')
             account_number=int(input('Enter Account Number :'))
             pin = int(input('Enter the pin :'))
             account = bank.accounts.get(account_number)
@@ -25,7 +25,7 @@ class main:
             else :
                 print('Account not found.')
         elif choice == 2 :
-            print('Entering the Registeration System.')
+            print('\nEntering the Registeration System.')
             name=input('Enter Account Holder Name :')
             pin = int(input('Enter the pin :'))
             deposit_value = int(input('Enter the deposit : '))
