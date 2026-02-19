@@ -1,8 +1,55 @@
 from Account import Account
 class BankingSystem:
+    
     def __init__(self):
         self.accounts = {}
         self.account_Number = 1001
+   
+    def main_menu(self,account_number):
+        while True:    
+            print('\n')
+            print('Welcome to CLI formatted Banking System !')
+            print('Please Choice from the below options :')
+            print('\n')
+            print('====Main Menu====')
+            print('1.Deposit Amount')
+            print('2.Withdraw Amount')
+            print('3.Check Balance')
+            print('4.Exit')
+            print('=================')
+                    
+            choiceM = int(input('Enter the Choice here ->'))
+            if choiceM == 1 :
+                print('Entering the Depositing System.')
+                deposit_amount=int(input('Enter the Deposit Amount :'))
+                self.deposit(account_number,deposit_amount)
+            elif choiceM ==  2:
+                print('Entering the Withdrawing System.')
+                withdraw_amount = int(input('Enter the withdrawal Amount :'))
+                self.withdraw(account_number,withdraw_amount)
+            elif choiceM == 3 :
+                print('Gathering the detials to check the current balance.')
+                self.check_balance(account_number)
+            elif choiceM == 4 :
+                print('Exiting the Banking System. Thank you for using our service.')
+                break
+            else :
+                print('Invalid Choice. Please enter a valid option from the menu.')
+
+
+    def LogInSystem(self,account_number,pin):
+        account = self.accounts.get(account_number)
+        if not account :
+            print('Account not found.')
+            return False
+        else:
+            if account.PIN_NUMBER == pin :
+                print('Login Successful.!')
+                print('Entering Main Dashboard.')
+                self.main_menu(account_number)
+            else:
+                print('Wrong Credentials.')
+                return False
 
     def registerSystem(self,name,pin,initial_deposit_value):
         if not name.strip():

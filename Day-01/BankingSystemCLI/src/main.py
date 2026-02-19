@@ -8,15 +8,23 @@ class main:
         print('Please Choice from the below options :')
         print('\n')
         print('====Main Menu====')
-        print('1.Register Account')
-        print('2.Deposit Amount')
-        print('3.Withdraw Amount')
-        print('4.Check Balance')
-        print('5.Exit')
+        print('1.LogIn Account')
+        print('2.Register Account')
+        print('3.Exit')
         print('=================')
-                
-        choiceM = int(input('Enter the Choice here ->'))
-        if choiceM == 1 :
+        
+        choice = int(input('Enter the Choice here ->'))
+        if choice == 1 :
+            print('Entering the Log-IN System.')
+            account_number=int(input('Enter Account Number :'))
+            pin = int(input('Enter the pin :'))
+            account = bank.accounts.get(account_number)
+            if account:
+                print('Entering LogIn System.')
+                bank.LogInSystem(account_number,pin)
+            else :
+                print('Account not found.')
+        elif choice == 2 :
             print('Entering the Registeration System.')
             name=input('Enter Account Holder Name :')
             pin = int(input('Enter the pin :'))
@@ -25,22 +33,8 @@ class main:
             if account :
                 print('Account created successfully.!')
                 print(account.get_account_details())
-        elif choiceM == 2 :
-            print('Entering the Depositing System.')
-            account_number= int(input('Enter the account number :'))
-            deposit_amount=int(input('Enter the Deposit Amount :'))
-            bank.deposit(account_number,deposit_amount)
-        elif choiceM == 3 :
-            print('Entering the Withdrawing System.')
-            account_number = int(input('Enter the Account Number :'))
-            withdraw_amount = int(input('Enter the withdrawal Amount :'))
-            bank.withdraw(account_number,withdraw_amount)
-        elif choiceM == 4 :
-            print('Gathering the detials to check the current balance.')
-            account_number = int(input('Enter the Account Number :'))
-            bank.check_balance(account_number)
-        elif choiceM == 5 :
+        elif choice == 3:
             print('Exiting the Banking System. Thank you for using our service.')
             break
         else :
-            print('Invalid Choice. Please enter a valid option from the menu.')
+                print('Invalid Choice. Please enter a valid option from the menu.')
