@@ -1,8 +1,10 @@
 import sqlite3
 import os
+from entities.account import Account
+from entities.transaction import Transaction
 from datetime import datetime
 
-class account_repository:
+class AccountRepository:
     
     def __init__(self):
 
@@ -14,17 +16,18 @@ class account_repository:
         self.c = self.conn.cursor()
 
     def get_account(self,account_number):
-        self.c.execute("""select account_number,account_holder_name,balance
+        self.c.execute("""select account_number,account_holder_name,balance,created_at
                     from accounts 
                     where account_number = ?""",(account_number,))
-        record = self.c.fetchone()
-        return record
+        acc = self.c.fetchone()
+        if acc is None:
+            return None
+        return Account(acc[0],acc[1],acc[2],acc[3])
     
-    def insert_accout(self,account_number,name,balance):
+    def insert_account(self,account_number,name,balance):
         created_at = datetime.now().isoformat()
         self.c.execute("""insert into accounts (account_number, account_holder_name, balance,created_at) values(? , ? , ? , ?)""",(account_number , name , balance , created_at))
-        self.insert_transaction(account_number,"Initial Deposit",balance,balance)
-        self.conn.commit()
+       
 
     def update_balance(self,account_number,new_balance):
         self.c.execute("""update accounts 
@@ -48,7 +51,13 @@ class account_repository:
     
     def get_transactions(self,account_number):
         self.c.execute("""select * from transactions where account_number = ? order by timestamp DESC""",(account_number,))
-        return self.c.fetchall()
+        rows = self.c.fetchall()
+        transactions = []
+
+        for row in rows:
+            txn = Transaction(row[1],row[2],row[3],row[4],row[5])
+            transactions.append(txn)
+        return transactions
     
     def commit(self):
         self.conn.commit()
@@ -74,3 +83,4 @@ class account_repository:
 
 #?Should repository commit automatically?
 #?→ Yes for account creation (since it's a single operation).
+

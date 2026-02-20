@@ -1,4 +1,4 @@
-class banking_services:
+class BankingServices:
 
     #! LOOSE COUPLING CONCEPT APPLIED IN __INIT__()↓
     def __init__(self,repository):
@@ -19,22 +19,29 @@ class banking_services:
         else :
             new_account_number = last_account_number + 1 
         #inserting account
-        self.repo.insert_accout(new_account_number,name,initial_deposit)
+        try:
+            self.repo.insert_account(new_account_number,name,initial_deposit)
+            self.repo.insert_transaction(new_account_number,"INITIAL DEPOSIT",initial_deposit,initial_deposit)
+            self.repo.commit()
+        except Exception as e:
+            self.repo.rollback()
+            raise e
         return new_account_number
     
     def deposit(self,account_number,amount):
         account = self.repo.get_account(account_number)
-        print(type(account))
-        
+    
         if not account:
             raise ValueError('Account Not Found.')
         if amount <= 0:
             raise ValueError('Amount should be greater than 0.')
-        balance = account[2]
+        
+        balance = account.balance
         new_balance = balance + amount
+        
         try:
-            self.repo.update_balance(account_number,new_balance)
-            self.repo.insert_transaction(account_number,"deposit",amount,new_balance)
+            self.repo.update_balance(account.account_number,new_balance)
+            self.repo.insert_transaction(account_number,"DEPOSIT",amount,new_balance)
             self.repo.commit()
         except Exception as e:
             self.repo.rollback()
@@ -48,15 +55,15 @@ class banking_services:
             raise ValueError('Account not found')
         if amount <= 0:
             raise ValueError('Amount should be greater than 0.')
-        if account[2] < amount:
+        if account.balance < amount:
             raise ValueError('Insufficient Balance.')
         
-        old_balance = account[2]
+        old_balance = account.balance
         new_balance = old_balance - amount
 
         try :
-            self.repo.update_balance(account_number,new_balance)
-            self.repo.insert_transaction(account_number,"withdraw",amount,new_balance)
+            self.repo.update_balance(account.account_number,new_balance)
+            self.repo.insert_transaction(account_number,"WITHDRAW",amount,new_balance)
             self.repo.commit()
         except Exception as e:
             self.repo.rollback()
@@ -70,4 +77,3 @@ class banking_services:
             raise ValueError('Account not found.')
         transactions_logs =  self.repo.get_transactions(account_number)
         return transactions_logs
-
