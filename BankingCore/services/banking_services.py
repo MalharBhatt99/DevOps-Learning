@@ -2,6 +2,7 @@ from exceptions.account_not_found_exception import AccountNotFoundException
 from exceptions.insufficient_balance_exception import InsufficientBalanceException
 from exceptions.invalid_account_name_exception import InvalidAccountNameException
 from exceptions.invalid_amount_exception import InvalidAmountException
+import re
 
 class BankingServices:
 
@@ -14,8 +15,10 @@ class BankingServices:
         #name validation
         if not name or not name.strip():
             raise InvalidAccountNameException('Name cannot be empty.')
+        if not re.fullmatch(r"[A-Za-z ]+", name):
+            raise InvalidAccountNameException('Name must only contain letters and spaces.')
         #deposit validation
-        if initial_deposit<0:
+        if initial_deposit<=0:
             raise InvalidAmountException('Initial Deposit should be greater than 0.')
         #generate account_number    
         last_account_number = self.repo.get_last_account_number()

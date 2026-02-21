@@ -8,11 +8,11 @@ class AccountRepository:
     
     def __init__(self):
 
-        #!PATH HANDLING↓
-        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        DB_PATH = os.path.join(BASE_DIR,"..","database","accounts.db")
+        #!PATH HANDLING↓import os
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        DB_PATH = os.path.join(BASE_DIR, "database", "accounts.db")
 
-        self.conn = sqlite3.connect(DB_PATH)
+        self.conn = sqlite3.connect(DB_PATH,check_same_thread=False)
         self.c = self.conn.cursor()
 
     def get_account(self,account_number):
